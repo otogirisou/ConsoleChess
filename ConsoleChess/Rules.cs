@@ -16,11 +16,11 @@ namespace ConsoleChess
             }
             else
             {
-                if (board.grid[firstInput].occupyingPiece.white != whitesTurn)
+                if (board.grid[firstInput].occupyingPiece.White != whitesTurn)
                 {
                     return false;
                 }
-                switch (board.grid[firstInput].occupyingPiece.pieceType)
+                switch (board.grid[firstInput].occupyingPiece.PieceTypePublic)
                 {
                     case PieceType.Pawn:
                         return CheckPawn(firstInput, secondInput, board);
@@ -48,7 +48,7 @@ namespace ConsoleChess
             {
                 if (tempCopy.grid[kingIndex].occupyingPiece != null)
                 {
-                    if (tempCopy.grid[kingIndex].occupyingPiece.pieceType == PieceType.King && tempCopy.grid[kingIndex].occupyingPiece.white == whitesTurn)
+                    if (tempCopy.grid[kingIndex].occupyingPiece.PieceTypePublic == PieceType.King && tempCopy.grid[kingIndex].occupyingPiece.White == whitesTurn)
                     {
                         for (int i = 0; i < 64; i++)
                         {
@@ -68,7 +68,7 @@ namespace ConsoleChess
         {
             if (board.grid[secondInput].occupyingPiece == null) //maybe switches here?
             {
-                if (board.grid[firstInput].occupyingPiece.white)
+                if (board.grid[firstInput].occupyingPiece.White)
                 {
                     if (secondInput + 8 == firstInput || (secondInput + 16 == firstInput && !board.grid[firstInput].occupyingPiece.hasMoved && board.grid[secondInput].occupyingPiece == null))
                     {
@@ -87,13 +87,13 @@ namespace ConsoleChess
             }
             else
             {
-                if (board.grid[firstInput].occupyingPiece.white == board.grid[secondInput].occupyingPiece.white)
+                if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
                 {
                     return false;
                 }
                 else
                 {
-                    if (board.grid[firstInput].occupyingPiece.white)
+                    if (board.grid[firstInput].occupyingPiece.White)
                     {
                         if ((firstInput == secondInput + 7 && (firstInput + 1) % 8 != 0) || (firstInput == secondInput + 9 && firstInput % 8 != 0))
                         {
@@ -175,7 +175,7 @@ namespace ConsoleChess
             {
                 return true;
             }
-            if (board.grid[firstInput].occupyingPiece.white != board.grid[secondInput].occupyingPiece.white)
+            if (board.grid[firstInput].occupyingPiece.White != board.grid[secondInput].occupyingPiece.White)
             {
                 return true;
             }
@@ -184,7 +184,7 @@ namespace ConsoleChess
         }
         private static bool CheckBishop(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].occupyingPiece.white == board.grid[secondInput].occupyingPiece.white)
+            if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
             {
                 return false;
             }
@@ -249,7 +249,7 @@ namespace ConsoleChess
         }
         private static bool CheckKnight(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].occupyingPiece.white == board.grid[secondInput].occupyingPiece.white)
+            if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
             {
                 return false;
             }
@@ -262,7 +262,7 @@ namespace ConsoleChess
         }
         private static bool CheckKing(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].occupyingPiece.white == board.grid[secondInput].occupyingPiece.white)
+            if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
             {
                 return false;
             }

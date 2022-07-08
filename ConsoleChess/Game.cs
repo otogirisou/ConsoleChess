@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ConsoleChess
 {
@@ -13,22 +14,58 @@ namespace ConsoleChess
             currentBoard.InitialSetup();
             whitesTurn = true;
             ConsoleHelper.PrintBoard(currentBoard);
+        }
+
+        int firstMove;
+        int secondMove;
+        private bool whitesTurn;
+        private Board currentBoard = new Board();
+        public Board CurrentBoard
+        {
+            get
+            {
+                return currentBoard;
+            }
+        }
+        public bool WhitesTurn
+        {
+            get
+            {
+                return whitesTurn;
+            }
+        }
+
+        public void StartGame()
+        {
             while (true)
             {
                 Console.WriteLine("Where is the piece you want to move? (A-H)(1-8)");
                 firstMove = ConsoleHelper.GetIndexFromInput();
-                if(firstMove == -1)
+                if (firstMove == -1)
                 {
                     Console.WriteLine("Not a valid input! Try again");
                 }
+                else if (firstMove == -2)
+                {
+                    SaveLoad.Save(this);
+                    Console.WriteLine("Game saved!");
+                    Console.WriteLine("Window closing in:");
+                    for (int i = 5; i > 0; i--)
+                    {
+                        Console.WriteLine(i);
+                        Thread.Sleep(500);
+                    }
+                    break;
+                }
+
                 else
                 {
                     Console.WriteLine("Where do you want to move? (A - H)(1 - 8)");
                     secondMove = ConsoleHelper.GetIndexFromInput();
-                    if(secondMove == -1)
+                    if (secondMove == -1)
                     {
                         Console.WriteLine("Not a valid input! Try again");
-                    } 
+                    }
                     else if (Rules.CheckMove(firstMove, secondMove, currentBoard, whitesTurn))
                     {
                         if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, whitesTurn))
@@ -48,14 +85,9 @@ namespace ConsoleChess
                         Console.WriteLine("Not a valid move! Try again");
                     }
                 }
-                
+
             }
         }
-
-        int firstMove;
-        int secondMove;
-        bool whitesTurn;
-        Board currentBoard = new Board();
 
         public static void PerformMove(int firstInput, int secondInput, Board board)
         {

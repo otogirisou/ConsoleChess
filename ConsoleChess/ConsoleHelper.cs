@@ -13,6 +13,10 @@ namespace ConsoleChess
             int firstPart;
             int secondPart;
             string userInput = Console.ReadLine().Trim().ToLower();
+            if (userInput == "save")
+            {
+                return -2;
+            }
             if (userInput.Length != 2)
             {
                 return -1; //exceptions?
@@ -112,8 +116,8 @@ namespace ConsoleChess
                 char letter;
                 if (board.grid[i].occupyingPiece != null)
                 {
-                    letter = board.grid[i].occupyingPiece.letter;
-                    if (board.grid[i].occupyingPiece.white)
+                    letter = board.grid[i].occupyingPiece.Letter;
+                    if (board.grid[i].occupyingPiece.White)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue; // white is blue
                     }

@@ -8,11 +8,32 @@ namespace ConsoleChess
 {
     class Piece
     {
-        public char letter;
-        public bool white;
+        protected char letter;
+        protected bool white;
+        protected PieceType pieceType;
+        public char Letter
+        {
+            get
+            {
+                return letter;
+            }
+        }
+        public bool White
+        {
+            get
+            {
+                return white;
+            }
+        }
         public bool hasMoved = false;
-        public PieceType pieceType;
-        
+        public PieceType PieceTypePublic
+        {
+            get
+            {
+                return pieceType;
+
+            }
+        }
     }
     public enum PieceType
     {
