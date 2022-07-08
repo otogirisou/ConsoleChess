@@ -8,6 +8,33 @@ namespace ConsoleChess
 {
     static class ConsoleHelper
     {
+        public static Game InitialMenu()
+        {
+            string userInput = "";
+            do
+            {
+                Console.WriteLine("Enter 'new' to start a new game");
+                Console.WriteLine("Enter 'load' to load previous game. Enter 'save' while playing to save");
+                userInput = Console.ReadLine().Trim().ToLower();
+            } while (userInput != "new" && userInput != "load");
+            Console.Clear();
+            Game game;
+            if (userInput == "new")
+            {
+                game = new Game();
+                Board currentBoard = new Board();
+                currentBoard.InitialSetup();
+                game.CurrentBoard = currentBoard;
+                game.WhitesTurn = true;
+            }
+            else
+            {
+                game = SaveLoad.Load();
+
+            }
+            ConsoleHelper.PrintBoard(game.CurrentBoard);
+            return game;
+        }
         public static int GetIndexFromInput()
         {
             int firstPart;
@@ -105,7 +132,7 @@ namespace ConsoleChess
                 {
                     Console.Write("{0} - ", (i / 8) + 1);
                 }
-                if (board.grid[i].white)
+                if ((bool)board.grid[i].WhiteSpace)
                 {
                     Console.BackgroundColor = ConsoleColor.White;
                 }
@@ -114,10 +141,10 @@ namespace ConsoleChess
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 char letter;
-                if (board.grid[i].occupyingPiece != null)
+                if (board.grid[i].OccupyingPiece != null)
                 {
-                    letter = board.grid[i].occupyingPiece.Letter;
-                    if (board.grid[i].occupyingPiece.White)
+                    letter = board.grid[i].OccupyingPiece.Letter;
+                    if (board.grid[i].OccupyingPiece.White)
                     {
                         Console.ForegroundColor = ConsoleColor.Blue; // white is blue
                     }

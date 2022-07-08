@@ -10,17 +10,17 @@ namespace ConsoleChess
     {
         public static bool CheckMove(int firstInput, int secondInput, Board board, bool whitesTurn) //true means valid
         {
-            if(board.grid[firstInput].occupyingPiece == null)
+            if(board.grid[firstInput].OccupyingPiece == null)
             {
                 return false;
             }
             else
             {
-                if (board.grid[firstInput].occupyingPiece.White != whitesTurn)
+                if (board.grid[firstInput].OccupyingPiece.White != whitesTurn)
                 {
                     return false;
                 }
-                switch (board.grid[firstInput].occupyingPiece.PieceTypePublic)
+                switch (board.grid[firstInput].OccupyingPiece.PieceTypePublic)
                 {
                     case PieceType.Pawn:
                         return CheckPawn(firstInput, secondInput, board);
@@ -46,9 +46,9 @@ namespace ConsoleChess
             Game.PerformMove(firstInput, secondInput, tempCopy);
             for (int kingIndex = 0; kingIndex < 64; kingIndex++)
             {
-                if (tempCopy.grid[kingIndex].occupyingPiece != null)
+                if (tempCopy.grid[kingIndex].OccupyingPiece != null)
                 {
-                    if (tempCopy.grid[kingIndex].occupyingPiece.PieceTypePublic == PieceType.King && tempCopy.grid[kingIndex].occupyingPiece.White == whitesTurn)
+                    if (tempCopy.grid[kingIndex].OccupyingPiece.PieceTypePublic == PieceType.King && tempCopy.grid[kingIndex].OccupyingPiece.White == whitesTurn)
                     {
                         for (int i = 0; i < 64; i++)
                         {
@@ -66,11 +66,11 @@ namespace ConsoleChess
 
         private static bool CheckPawn(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[secondInput].occupyingPiece == null) //maybe switches here?
+            if (board.grid[secondInput].OccupyingPiece == null) //maybe switches here?
             {
-                if (board.grid[firstInput].occupyingPiece.White)
+                if (board.grid[firstInput].OccupyingPiece.White)
                 {
-                    if (secondInput + 8 == firstInput || (secondInput + 16 == firstInput && !board.grid[firstInput].occupyingPiece.HasMoved && board.grid[secondInput].occupyingPiece == null))
+                    if (secondInput + 8 == firstInput || (secondInput + 16 == firstInput && !(bool)board.grid[firstInput].OccupyingPiece.HasMoved && board.grid[secondInput].OccupyingPiece == null))
                     {
                         return true;
                     }
@@ -78,7 +78,7 @@ namespace ConsoleChess
                 }
                 else
                 {
-                    if (secondInput == firstInput + 8 || (secondInput == firstInput + 16 && !board.grid[firstInput].occupyingPiece.HasMoved && board.grid[firstInput+8].occupyingPiece == null))
+                    if (secondInput == firstInput + 8 || (secondInput == firstInput + 16 && !(bool)board.grid[firstInput].OccupyingPiece.HasMoved && board.grid[firstInput+8].OccupyingPiece == null))
                     {
                         return true;
                     }
@@ -87,13 +87,13 @@ namespace ConsoleChess
             }
             else
             {
-                if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
+                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
                 {
                     return false;
                 }
                 else
                 {
-                    if (board.grid[firstInput].occupyingPiece.White)
+                    if (board.grid[firstInput].OccupyingPiece.White)
                     {
                         if ((firstInput == secondInput + 7 && (firstInput + 1) % 8 != 0) || (firstInput == secondInput + 9 && firstInput % 8 != 0))
                         {
@@ -151,7 +151,7 @@ namespace ConsoleChess
                     {
                         while (firstInput - (verticalTower * 8) != secondInput)
                         {
-                            if (board.grid[firstInput - (verticalTower * 8)].occupyingPiece != null)
+                            if (board.grid[firstInput - (verticalTower * 8)].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -162,7 +162,7 @@ namespace ConsoleChess
                     {
                         while (firstInput + (verticalTower * 8) != secondInput)
                         {
-                            if (board.grid[firstInput + (verticalTower * 8)].occupyingPiece != null)
+                            if (board.grid[firstInput + (verticalTower * 8)].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -171,11 +171,11 @@ namespace ConsoleChess
                     }
                 }
             }
-            if (board.grid[secondInput].occupyingPiece == null)
+            if (board.grid[secondInput].OccupyingPiece == null)
             {
                 return true;
             }
-            if (board.grid[firstInput].occupyingPiece.White != board.grid[secondInput].occupyingPiece.White)
+            if (board.grid[firstInput].OccupyingPiece.White != board.grid[secondInput].OccupyingPiece.White)
             {
                 return true;
             }
@@ -184,7 +184,7 @@ namespace ConsoleChess
         }
         private static bool CheckBishop(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
+            if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
             {
                 return false;
             }
@@ -197,7 +197,7 @@ namespace ConsoleChess
                     {
                         for (int i = 1; i < rowsToMove; i++)
                         {
-                            if (board.grid[firstInput-7*i].occupyingPiece != null)
+                            if (board.grid[firstInput-7*i].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -207,7 +207,7 @@ namespace ConsoleChess
                     {
                         for (int i = 1; i < rowsToMove; i++)
                         {
-                            if (board.grid[firstInput - 9 * i].occupyingPiece != null)
+                            if (board.grid[firstInput - 9 * i].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -226,7 +226,7 @@ namespace ConsoleChess
                     {
                         for (int i = 1; i < rowsToMove; i++)
                         {
-                            if (board.grid[firstInput+7*i].occupyingPiece != null)
+                            if (board.grid[firstInput+7*i].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -236,7 +236,7 @@ namespace ConsoleChess
                     {
                         for (int i = 1; i < rowsToMove; i++)
                         {
-                            if (board.grid[firstInput + 9 * i].occupyingPiece != null)
+                            if (board.grid[firstInput + 9 * i].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -249,7 +249,7 @@ namespace ConsoleChess
         }
         private static bool CheckKnight(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
+            if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
             {
                 return false;
             }
@@ -262,7 +262,7 @@ namespace ConsoleChess
         }
         private static bool CheckKing(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].occupyingPiece.White == board.grid[secondInput].occupyingPiece.White)
+            if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
             {
                 return false;
             }

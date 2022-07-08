@@ -8,13 +8,26 @@ namespace ConsoleChess
 {
     class Space
     {
-        public Piece occupyingPiece { get; set; } //also make private version?
-        public bool white { get; set; } //also make private version?
-
-        public Space(bool w)
+        public Piece OccupyingPiece { get; set; } //also make private version?
+        public bool? WhiteSpace 
         {
-            white = w;
-            occupyingPiece = null;
+            get 
+            { 
+                return whiteSpace;
+            }
+            set 
+            {
+                if (whiteSpace == null)
+                {
+                    whiteSpace = value;
+                }
+            } 
+        } //also make private version?
+        private bool? whiteSpace;
+
+        public Space(bool? whitespace)
+        {
+            whiteSpace = whitespace;
         }
     }
 }

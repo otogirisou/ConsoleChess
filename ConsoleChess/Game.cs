@@ -9,34 +9,43 @@ namespace ConsoleChess
 {
     class Game
     {
-        public Game()
-        {
-            currentBoard.InitialSetup();
-            whitesTurn = true;
-            ConsoleHelper.PrintBoard(currentBoard);
-        }
 
         int firstMove;
         int secondMove;
-        private bool whitesTurn;
-        private Board currentBoard = new Board();
+        private bool? whitesTurn;
+        private Board currentBoard;
         public Board CurrentBoard
         {
             get
             {
                 return currentBoard;
             }
+            set
+            {
+                if (currentBoard == null)
+                {
+                    currentBoard = value;
+                }
+            }
         }
-        public bool WhitesTurn
+        public bool? WhitesTurn
         {
             get
             {
                 return whitesTurn;
             }
+            set
+            {
+                if (whitesTurn == null)
+                {
+                    whitesTurn = value;
+                }
+            }
         }
 
         public void StartGame()
         {
+
             while (true)
             {
                 Console.WriteLine("Where is the piece you want to move? (A-H)(1-8)");
@@ -53,7 +62,7 @@ namespace ConsoleChess
                     for (int i = 5; i > 0; i--)
                     {
                         Console.WriteLine(i);
-                        Thread.Sleep(500);
+                        Thread.Sleep(250);
                     }
                     break;
                 }
@@ -66,9 +75,9 @@ namespace ConsoleChess
                     {
                         Console.WriteLine("Not a valid input! Try again");
                     }
-                    else if (Rules.CheckMove(firstMove, secondMove, currentBoard, whitesTurn))
+                    else if (Rules.CheckMove(firstMove, secondMove, currentBoard, (bool)whitesTurn))
                     {
-                        if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, whitesTurn))
+                        if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, (bool)whitesTurn))
                         {
                             Console.WriteLine("That move would leave your king checked! Try again");
                         }
@@ -91,10 +100,10 @@ namespace ConsoleChess
 
         public static void PerformMove(int firstInput, int secondInput, Board board)
         {
-            board.grid[firstInput].occupyingPiece.HasMoved = true;
+            board.grid[firstInput].OccupyingPiece.HasMoved = true;
             //code here to keep track of dead pieces
-            board.grid[secondInput].occupyingPiece = board.grid[firstInput].occupyingPiece;
-            board.grid[firstInput].occupyingPiece = null;
+            board.grid[secondInput].OccupyingPiece = board.grid[firstInput].OccupyingPiece;
+            board.grid[firstInput].OccupyingPiece = null;
         }
     }
 }

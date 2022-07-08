@@ -8,9 +8,37 @@ namespace ConsoleChess
 {
     class Piece
     {
+        public Piece(bool White, bool hasmoved, PieceType piecetypepublic)
+        {
+            white = White;
+            pieceType = piecetypepublic;
+            switch (piecetypepublic)
+            {
+                case PieceType.Pawn:
+                    letter = 'p';
+                    break;
+                case PieceType.Tower:
+                    letter = 't';
+                    break;
+                case PieceType.Knight:
+                    letter = 'k';
+                    break;
+                case PieceType.Bishop:
+                    letter = 'b';
+                    break;
+                case PieceType.King:
+                    letter = 'K';
+                    break;
+                case PieceType.Queen:
+                    letter = 'Q';
+                    break;
+                default:
+                    return;
+            }
+        }
         protected char letter;
         protected bool white;
-        private bool hasMoved = false;
+        protected bool hasMoved;
         protected PieceType pieceType;
         public char Letter
         {
@@ -18,10 +46,7 @@ namespace ConsoleChess
         }
         public bool White
         {
-            get
-            {
-                return white;
-            }
+            get { return white; }
         }
         public bool HasMoved
         {

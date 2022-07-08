@@ -11,23 +11,28 @@ namespace ConsoleChess
 {
     static class SaveLoad
     {
+        private readonly static string fileName = "State.json";
         public static void Save(Game game)
         {
-            string fileName = "State.json";
             if(!System.IO.File.Exists(fileName))
             {
                 using FileStream createStream = File.Create(fileName);
             }
             string jsonString = JsonSerializer.Serialize(game);
             File.WriteAllText(fileName, jsonString);
-            Console.WriteLine(File.ReadAllText(fileName));
+            //Console.WriteLine(File.ReadAllText(fileName)); //for debug
         }
 
-        //public static Game Load()
-        //{
-        //    Game? game =
-        //       JsonSerializer.Deserialize<Game>(jsonString);
-
-        //}
+        public static Game Load()
+        {
+            string jsonstring = "";
+            using (StreamReader reader = new StreamReader(fileName))
+            {
+                jsonstring += reader.ReadLine();
+            }
+            Game game =
+               JsonSerializer.Deserialize<Game>(jsonstring);
+            return game;
+        }
     }
 }

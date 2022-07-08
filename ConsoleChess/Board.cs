@@ -11,7 +11,8 @@ namespace ConsoleChess
     {
         public Space[] grid { get; set; } //also make private version?
 
-        public Board()
+
+        public void InitialSetup()
         {
             grid = new Space[64];
             bool whiteSpace = true;
@@ -23,33 +24,31 @@ namespace ConsoleChess
                 }
                 grid[i] = new Space(whiteSpace);
             }
-        }
-
-        public void InitialSetup()
-        {
             for (int i = 0; i < 8; i++)
             {
-                grid[48 + i].occupyingPiece = new Pawn(true);
-                grid[8 + i].occupyingPiece = new Pawn(false);
+                grid[48 + i].OccupyingPiece = new Piece(true, false, PieceType.Pawn);
+                grid[8 + i].OccupyingPiece = new Piece(false, false, PieceType.Pawn);
             }
             //white pieces
-            grid[56].occupyingPiece = new Tower(true);
-            grid[63].occupyingPiece = new Tower(true);
-            grid[57].occupyingPiece = new Knight(true);
-            grid[62].occupyingPiece = new Knight(true);
-            grid[58].occupyingPiece = new Bishop(true);
-            grid[61].occupyingPiece = new Bishop(true);
-            grid[59].occupyingPiece = new King(true);
-            grid[60].occupyingPiece = new Queen(true);
+            grid[56].OccupyingPiece = new Piece(true, false, PieceType.Tower);
+            grid[63].OccupyingPiece = new Piece(true, false, PieceType.Tower);
+            grid[57].OccupyingPiece = new Piece(true, false, PieceType.Knight);
+            grid[62].OccupyingPiece = new Piece(true, false, PieceType.Knight);
+            grid[58].OccupyingPiece = new Piece(true, false, PieceType.Bishop);
+            grid[61].OccupyingPiece = new Piece(true, false, PieceType.Bishop);
+            grid[59].OccupyingPiece = new Piece(true, false, PieceType.King);
+            grid[60].OccupyingPiece = new Piece(true, false, PieceType.Queen);
             //black pieces
-            grid[0].occupyingPiece = new Tower(false);
-            grid[7].occupyingPiece = new Tower(false);
-            grid[1].occupyingPiece = new Knight(false);
-            grid[6].occupyingPiece = new Knight(false);
-            grid[2].occupyingPiece = new Bishop(false);
-            grid[5].occupyingPiece = new Bishop(false);
-            grid[3].occupyingPiece = new King(false);
-            grid[4].occupyingPiece = new Queen(false);
+            grid[0].OccupyingPiece = new Piece(false, false, PieceType.Tower);
+            grid[7].OccupyingPiece = new Piece(false, false, PieceType.Tower);
+            grid[1].OccupyingPiece = new Piece(false, false, PieceType.Knight);
+            grid[6].OccupyingPiece = new Piece(false, false, PieceType.Knight);
+            grid[2].OccupyingPiece = new Piece(false, false, PieceType.Bishop);
+            grid[5].OccupyingPiece = new Piece(false, false, PieceType.Bishop);
+            grid[3].OccupyingPiece = new Piece(false, false, PieceType.King);
+            grid[4].OccupyingPiece = new Piece(false, false, PieceType.Queen);
+
+            
         }
 
         public Board Clone()

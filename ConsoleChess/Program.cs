@@ -6,7 +6,7 @@ namespace ConsoleChess
     {
         static void Main(string[] args)
         {
-            Game game = new Game();
+            Game game = ConsoleHelper.InitialMenu();
             game.StartGame();
         }
     }
