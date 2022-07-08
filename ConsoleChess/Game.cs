@@ -91,7 +91,7 @@ namespace ConsoleChess
 
         public static void PerformMove(int firstInput, int secondInput, Board board)
         {
-            board.grid[firstInput].occupyingPiece.hasMoved = true;
+            board.grid[firstInput].occupyingPiece.HasMoved = true;
             //code here to keep track of dead pieces
             board.grid[secondInput].occupyingPiece = board.grid[firstInput].occupyingPiece;
             board.grid[firstInput].occupyingPiece = null;

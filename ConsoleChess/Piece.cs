@@ -10,13 +10,11 @@ namespace ConsoleChess
     {
         protected char letter;
         protected bool white;
+        private bool hasMoved = false;
         protected PieceType pieceType;
         public char Letter
         {
-            get
-            {
-                return letter;
-            }
+            get { return letter; }
         }
         public bool White
         {
@@ -25,14 +23,20 @@ namespace ConsoleChess
                 return white;
             }
         }
-        public bool hasMoved = false;
+        public bool HasMoved
+        {
+            get { return hasMoved; }
+            set 
+            { 
+                if(!hasMoved)
+                {
+                    hasMoved = value;
+                }
+            }
+        }
         public PieceType PieceTypePublic
         {
-            get
-            {
-                return pieceType;
-
-            }
+            get { return pieceType; }
         }
     }
     public enum PieceType

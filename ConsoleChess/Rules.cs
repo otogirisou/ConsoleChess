@@ -70,7 +70,7 @@ namespace ConsoleChess
             {
                 if (board.grid[firstInput].occupyingPiece.White)
                 {
-                    if (secondInput + 8 == firstInput || (secondInput + 16 == firstInput && !board.grid[firstInput].occupyingPiece.hasMoved && board.grid[secondInput].occupyingPiece == null))
+                    if (secondInput + 8 == firstInput || (secondInput + 16 == firstInput && !board.grid[firstInput].occupyingPiece.HasMoved && board.grid[secondInput].occupyingPiece == null))
                     {
                         return true;
                     }
@@ -78,7 +78,7 @@ namespace ConsoleChess
                 }
                 else
                 {
-                    if (secondInput == firstInput + 8 || (secondInput == firstInput + 16 && !board.grid[firstInput].occupyingPiece.hasMoved && board.grid[firstInput+8].occupyingPiece == null))
+                    if (secondInput == firstInput + 8 || (secondInput == firstInput + 16 && !board.grid[firstInput].occupyingPiece.HasMoved && board.grid[firstInput+8].occupyingPiece == null))
                     {
                         return true;
                     }

@@ -9,7 +9,7 @@ namespace ConsoleChess
 {
     class Board
     {
-        public Space[] grid;
+        public Space[] grid { get; set; } //also make private version?
 
         public Board()
         {
