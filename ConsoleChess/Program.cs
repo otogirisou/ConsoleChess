@@ -6,8 +6,13 @@ namespace ConsoleChess
     {
         static void Main(string[] args)
         {
-            Game game = ConsoleHelper.InitialMenu();
+            Game game = GetGame();
             game.StartGame();
+        }
+
+        private static Game GetGame() //to add modularity
+        {
+            return ConsoleHelper.InitialMenu();
         }
     }
 }
