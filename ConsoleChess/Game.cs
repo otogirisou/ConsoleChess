@@ -78,45 +78,49 @@ namespace ConsoleChess
                 }
                 else if (firstMove == -2)
                 {
-                    SaveLoad.Save(this);
-                    Console.WriteLine("Game saved!");
-                    Console.WriteLine("Window closing in:");
-                    for (int i = 5; i > 0; i--)
-                    {
-                        Console.WriteLine(i);
-                        Thread.Sleep(250);
-                    }
+                    ConsoleHelper.SaveGameAndExit(this);
                     break;
                 }
-
+                else if (currentBoard.grid[firstMove].OccupyingPiece == null)
+                {
+                    ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1);
+                    Console.WriteLine("There is no piece to move there! Try again");
+                }
+                else if (currentBoard.grid[firstMove].OccupyingPiece.White != whitesTurn) //dont have to check elsewhere but i think currently it does...
+                {
+                    ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1);
+                    Console.WriteLine("The piece there is not yours! Try again");
+                }
                 else
                 {
+                    ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, firstMove); 
                     Console.WriteLine("Where do you want to move? (A - H)(1 - 8)");
                     secondMove = ConsoleHelper.GetIndexFromInput();
                     if (secondMove == -1)
                     {
+                        ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1); 
                         Console.WriteLine("Not a valid input! Try again");
                     }
                     else if (Rules.CheckMove(firstMove, secondMove, currentBoard, (bool)whitesTurn))
                     {
                         if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, (bool)whitesTurn))
                         {
+                            ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1);
                             Console.WriteLine("That move would leave your king checked! Try again");
                         }
                         else
                         {
                             PerformMove(firstMove, secondMove);
-                            Console.Clear();
-                            ConsoleHelper.PrintBoard(currentBoard, DeadWhitePieces, DeadBlackPieces);
+                            ConsoleHelper.PrintBoard(currentBoard, DeadWhitePieces, DeadBlackPieces, -1);
                             whitesTurn = !whitesTurn;
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Not a valid move! Try again");
+                        ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1); 
+                        Console.WriteLine("Not a valid move! Try again"); 
                     }
                 }
-
             }
         }
 

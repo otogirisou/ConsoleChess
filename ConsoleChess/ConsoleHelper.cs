@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace ConsoleChess
 {
@@ -32,7 +33,7 @@ namespace ConsoleChess
                 game = SaveLoad.Load();
 
             }
-            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces);
+            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1);
             return game;
         }
         public static int GetIndexFromInput()
@@ -124,16 +125,21 @@ namespace ConsoleChess
             }
         }
 
-        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces)
+        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece)
         {
+            Console.Clear();
             for (int i = 0; i < 64; i++)
             {
                 if (i % 8 == 0)
                 {
                     Console.Write("{0} - ", (i / 8) + 1);
                 }
-
-                PrintSpace(board.grid[i], false); //false is placeholder
+                bool selected = false;
+                if (i == selectedPiece)
+                {
+                    selected = true;
+                }
+                PrintSpace(board.grid[i], selected); 
 
                 if ((i+1)%8 == 0)
                 {
@@ -204,6 +210,18 @@ namespace ConsoleChess
                 }
             }
             Console.ResetColor();
+        }
+
+        public static void SaveGameAndExit(Game game)
+        {
+            SaveLoad.Save(game);
+            Console.WriteLine("Game saved!");
+            Console.WriteLine("Window closing in:");
+            for (int i = 5; i > 0; i--)
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(150);
+            }
         }
     }
 }
