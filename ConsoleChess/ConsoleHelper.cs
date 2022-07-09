@@ -145,10 +145,12 @@ namespace ConsoleChess
                 {
                     if (i == 7)
                     {
+                        Console.Write("  Dead blue pieces: ");
                         PrintDeadPieces(deadWhitePieces);
                     }
                     else if (i == 15)
                     {
+                        Console.Write("  Dead red pieces:  ");
                         PrintDeadPieces(deadBlackPieces);
                     }
                     Console.WriteLine();

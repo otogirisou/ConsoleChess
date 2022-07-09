@@ -280,10 +280,19 @@ namespace ConsoleChess
                     return false;
                 }
             }
-            if (((secondInput % 8 == (firstInput % 8) + 1 || (secondInput % 8) + 1 == firstInput % 8) && ((secondInput / 8) + 2 == firstInput / 8) || (firstInput / 8) + 2 == secondInput / 8)
-                        || ((secondInput % 8 == (firstInput % 8) + 2 || (secondInput % 8) + 2 == firstInput % 8) && ((secondInput / 8) + 1 == firstInput / 8) || (firstInput / 8) + 1 == secondInput / 8))
+            if (secondInput%8 == 1+firstInput%8 || 1+secondInput%8 == firstInput%8) //dest is one to either side
             {
-                return true;
+                if (2+secondInput/8 == firstInput/8 || 2+firstInput/8 == secondInput/8) //dest is two up or down
+                {
+                    return true;
+                }
+            }
+            else if (1 + secondInput / 8 == firstInput / 8 || 1 + firstInput / 8 == secondInput / 8) //dest is one up or down
+            {
+                if (secondInput % 8 == 2 + firstInput % 8 || 2 + secondInput % 8 == firstInput % 8) //dest is two to either side
+                {
+                    return true;
+                }
             }
             return false;
         }
