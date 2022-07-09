@@ -12,6 +12,7 @@ namespace ConsoleChess
         {
             white = White;
             pieceType = piecetypepublic;
+            hasMoved = hasmoved;
             switch (piecetypepublic)
             {
                 case PieceType.Pawn:
