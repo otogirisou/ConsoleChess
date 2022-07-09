@@ -52,17 +52,17 @@ namespace ConsoleChess
             else
             {
                 firstPart = ParseFirstChar(userInput[0]);
-                if(firstPart == -1)
+                if (firstPart == -1)
                 {
                     return -1;
                 }
                 secondPart = ParseSecondChar(userInput[1]);
-                if(secondPart == -1)
+                if (secondPart == -1)
                 {
                     return -1;
                 }
                 return firstPart + secondPart;
-                
+
             }
         }
 
@@ -93,9 +93,7 @@ namespace ConsoleChess
 
         private static int ParseSecondChar(char second)
         {
-            int secondPart;
-            string secondChar = second.ToString();
-            if (int.TryParse(secondChar, out secondPart))
+            if (int.TryParse(second.ToString(), out var secondPart))
             {
                 switch (secondPart)
                 {
@@ -139,9 +137,9 @@ namespace ConsoleChess
                 {
                     selected = true;
                 }
-                PrintSpace(board.grid[i], selected); 
+                PrintSpace(board.grid[i], selected);
 
-                if ((i+1)%8 == 0)
+                if ((i + 1) % 8 == 0)
                 {
                     if (i == 7)
                     {
