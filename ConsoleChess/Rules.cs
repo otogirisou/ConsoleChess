@@ -4,43 +4,46 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Diagnostics;
+
 namespace ConsoleChess
 {
     static class Rules
     {
-        public static bool CheckMove(int firstInput, int secondInput, Board board, bool whitesTurn) //true means valid
+        public static List<int> PossibleMoves(int firstInput, Board board)
         {
-            if(board.grid[firstInput].OccupyingPiece == null)
+            List<int> possibleMoves = new List<int>();
+            for (int i = 0; i < 64; i++)
             {
-                return false;
+                if (CheckMove(firstInput, i, board))
+                {
+                    possibleMoves.Add(i);
+                }
             }
-            else
+            return possibleMoves;
+        }
+        public static bool CheckMove(int firstInput, int secondInput, Board board) //true means valid
+        {
+            switch (board.grid[firstInput].OccupyingPiece.PieceTypePublic)
             {
-                if (board.grid[firstInput].OccupyingPiece.White != whitesTurn)
-                {
+                case PieceType.Pawn:
+                    return CheckPawn(firstInput, secondInput, board);
+                case PieceType.Tower:
+                    return CheckTower(firstInput, secondInput, board);
+                case PieceType.Knight:
+                    return CheckKnight(firstInput, secondInput, board);
+                case PieceType.Bishop:
+                    return CheckBishop(firstInput, secondInput, board);
+                case PieceType.King:
+                    return CheckKing(firstInput, secondInput, board);
+                case PieceType.Queen:
+                    return CheckQueen(firstInput, secondInput, board);
+                default:
                     return false;
-                }
-                switch (board.grid[firstInput].OccupyingPiece.PieceTypePublic)
-                {
-                    case PieceType.Pawn:
-                        return CheckPawn(firstInput, secondInput, board);
-                    case PieceType.Tower:
-                        return CheckTower(firstInput, secondInput, board);
-                    case PieceType.Knight:
-                        return CheckKnight(firstInput, secondInput, board);
-                    case PieceType.Bishop:
-                        return CheckBishop(firstInput, secondInput, board);
-                    case PieceType.King:
-                        return CheckKing(firstInput, secondInput, board);
-                    case PieceType.Queen:
-                        return CheckQueen(firstInput, secondInput, board);
-                    default:
-                        return false;
-                }
             }
         }
 
-        public static bool CheckCheck(int firstInput, int secondInput, Board board, bool whitesTurn)
+        public static bool CheckCheck(int firstInput, int secondInput, Board board, bool whitesTurn) //true means no check
         {
             Game tempGame = new Game(new List<Piece>(), new List<Piece>());
             tempGame.CurrentBoard = board.Clone();
@@ -53,9 +56,13 @@ namespace ConsoleChess
                     {
                         for (int i = 0; i < 64; i++)
                         {
-                            if (CheckMove(i, kingIndex, tempGame.CurrentBoard, whitesTurn))
+                            if (tempGame.CurrentBoard.grid[i].OccupyingPiece != null)
                             {
-                                return false;
+                                if (CheckMove(i, kingIndex, tempGame.CurrentBoard))
+                                {
+                                    Debug.WriteLine(i);
+                                    return false;
+                                }
                             }
                         }
                         return true;
@@ -115,12 +122,19 @@ namespace ConsoleChess
         }
         private static bool CheckTower(int firstInput, int secondInput, Board board)
         {
-            //towering probably here
-
+            //towering probably by editing here
+            if (board.grid[secondInput].OccupyingPiece != null)
+            {
+                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+                {
+                    return false;
+                }
+            }
+            //^^^^
             if (secondInput/8 == firstInput/8) //same row
             {
                 int horrizontalTower = 1;
-                if (secondInput%8 < firstInput%8)
+                if (secondInput < firstInput)
                 {
                     while (firstInput-horrizontalTower != secondInput)
                     {
@@ -142,52 +156,61 @@ namespace ConsoleChess
                         horrizontalTower++;
                     }
                 }
-            }
-            else
-            {
-                if (secondInput%8 == firstInput%8)
+                if (board.grid[secondInput].OccupyingPiece == null)
                 {
-                    int verticalTower = 1;
-                    if (secondInput < firstInput)
-                    {
-                        while (firstInput - (verticalTower * 8) != secondInput)
-                        {
-                            if (board.grid[firstInput - (verticalTower * 8)].OccupyingPiece != null)
-                            {
-                                return false;
-                            }
-                            verticalTower++;
-                        }
-                    }
-                    else
-                    {
-                        while (firstInput + (verticalTower * 8) != secondInput)
-                        {
-                            if (board.grid[firstInput + (verticalTower * 8)].OccupyingPiece != null)
-                            {
-                                return false;
-                            }
-                            verticalTower++;
-                        }
-                    }
+                    return true;
+                }
+                if (board.grid[firstInput].OccupyingPiece.White != board.grid[secondInput].OccupyingPiece.White)
+                {
+                    return true;
                 }
             }
-            if (board.grid[secondInput].OccupyingPiece == null)
+            else if(secondInput % 8 == firstInput % 8) //same col
             {
-                return true;
+                int verticalTower = 1;
+                if (secondInput < firstInput)
+                {
+                    while (firstInput - (verticalTower * 8) != secondInput)
+                    {
+                        if (board.grid[firstInput - (verticalTower * 8)].OccupyingPiece != null)
+                        {
+                            return false;
+                        }
+                        verticalTower++;
+                    }
+                }
+                else
+                {
+                    while (firstInput + (verticalTower * 8) != secondInput)
+                    {
+                        if (board.grid[firstInput + (verticalTower * 8)].OccupyingPiece != null)
+                        {
+                            return false;
+                        }
+                        verticalTower++;
+                    }
+                }
+                if (board.grid[secondInput].OccupyingPiece == null)
+                {
+                    return true;
+                }
+                if (board.grid[firstInput].OccupyingPiece.White != board.grid[secondInput].OccupyingPiece.White)
+                {
+                    return true;
+                }
             }
-            if (board.grid[firstInput].OccupyingPiece.White != board.grid[secondInput].OccupyingPiece.White)
-            {
-                return true;
-            }
+            
             return false;
 
         }
         private static bool CheckBishop(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+            if (board.grid[secondInput].OccupyingPiece != null)
             {
-                return false;
+                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+                {
+                    return false;
+                }
             }
             if (secondInput < firstInput)
             {
@@ -250,9 +273,12 @@ namespace ConsoleChess
         }
         private static bool CheckKnight(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+            if (board.grid[secondInput].OccupyingPiece != null)
             {
-                return false;
+                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+                {
+                    return false;
+                }
             }
             if (((secondInput % 8 == (firstInput % 8) + 1 || (secondInput % 8) + 1 == firstInput % 8) && ((secondInput / 8) + 2 == firstInput / 8) || (firstInput / 8) + 2 == secondInput / 8)
                         || ((secondInput % 8 == (firstInput % 8) + 2 || (secondInput % 8) + 2 == firstInput % 8) && ((secondInput / 8) + 1 == firstInput / 8) || (firstInput / 8) + 1 == secondInput / 8))
@@ -263,9 +289,12 @@ namespace ConsoleChess
         }
         private static bool CheckKing(int firstInput, int secondInput, Board board)
         {
-            if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+            if (board.grid[secondInput].OccupyingPiece != null)
             {
-                return false;
+                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
+                {
+                    return false;
+                }
             }
             if ((secondInput == firstInput + 1 && firstInput % 8 < 7) || (secondInput + 1 == firstInput && firstInput % 8 > 0) || secondInput + 8 == firstInput || secondInput == firstInput + 8
                             || (secondInput == firstInput + 9 && firstInput % 8 < 7) || (secondInput + 9 == firstInput && firstInput % 8 > 0) || (secondInput == firstInput + 7 && firstInput % 8 > 0)

@@ -33,7 +33,7 @@ namespace ConsoleChess
                 game = SaveLoad.Load();
 
             }
-            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1, (bool)game.WhitesTurn);
+            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1, (bool)game.WhitesTurn, new List<int>());
             return game;
         }
         public static int GetIndexFromInput()
@@ -125,7 +125,7 @@ namespace ConsoleChess
             }
         }
 
-        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece, bool whitesTurn)
+        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece, bool whitesTurn, List<int> possibleMoves)
         {
             Console.Clear();
             for (int i = 0; i < 64; i++)
@@ -135,7 +135,7 @@ namespace ConsoleChess
                     Console.Write("{0} - ", (i / 8) + 1);
                 }
                 bool selected = false;
-                if (i == selectedPiece)
+                if (i == selectedPiece || possibleMoves.Contains(i))
                 {
                     selected = true;
                 }
