@@ -21,7 +21,7 @@ namespace ConsoleChess
             Game game;
             if (userInput == "new")
             {
-                game = new Game();
+                game = new Game(new List<Piece>(), new List<Piece>());
                 Board currentBoard = new Board();
                 currentBoard.InitialSetup();
                 game.CurrentBoard = currentBoard;
@@ -32,7 +32,7 @@ namespace ConsoleChess
                 game = SaveLoad.Load();
 
             }
-            ConsoleHelper.PrintBoard(game.CurrentBoard);
+            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces);
             return game;
         }
         public static int GetIndexFromInput()
@@ -124,7 +124,7 @@ namespace ConsoleChess
             }
         }
 
-        public static void PrintBoard(Board board)
+        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces)
         {
             for (int i = 0; i < 64; i++)
             {
@@ -132,39 +132,78 @@ namespace ConsoleChess
                 {
                     Console.Write("{0} - ", (i / 8) + 1);
                 }
-                if ((bool)board.grid[i].WhiteSpace)
-                {
-                    Console.BackgroundColor = ConsoleColor.White;
-                }
-                else
-                {
-                    Console.BackgroundColor = ConsoleColor.Black;
-                }
-                char letter;
-                if (board.grid[i].OccupyingPiece != null)
-                {
-                    letter = board.grid[i].OccupyingPiece.Letter;
-                    if (board.grid[i].OccupyingPiece.White)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Blue; // white is blue
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red; // black is red
-                    }
-                }
-                else
-                {
-                    letter = ' ';
-                }
-                Console.Write(" {0}", letter);
+
+                PrintSpace(board.grid[i], false); //false is placeholder
+
                 if ((i+1)%8 == 0)
                 {
+                    if (i == 7)
+                    {
+                        PrintDeadPieces(deadWhitePieces);
+                    }
+                    else if (i == 15)
+                    {
+                        PrintDeadPieces(deadBlackPieces);
+                    }
                     Console.WriteLine();
                 }
-                Console.ResetColor();
             }
             Console.WriteLine("     A B C D E F G H");
+        }
+
+        private static void PrintSpace(Space space, bool selected)
+        {
+            if (selected)
+            {
+                Console.BackgroundColor = ConsoleColor.Green;
+            }
+            else if ((bool)space.WhiteSpace)
+            {
+                Console.BackgroundColor = ConsoleColor.White;
+            }
+            else
+            {
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+            char letter;
+            if (space.OccupyingPiece != null)
+            {
+                letter = space.OccupyingPiece.Letter;
+                if (space.OccupyingPiece.White)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue; // white is blue
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red; // black is red
+                }
+            }
+            else
+            {
+                letter = ' ';
+            }
+            Console.Write(" {0}", letter);
+            Console.ResetColor();
+        }
+
+        private static void PrintDeadPieces(List<Piece> deadPieces)
+        {
+            if (deadPieces.Count != 0)
+            {
+                if (deadPieces.First().White)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                }
+                foreach (Piece piece in deadPieces)
+                {
+                    Console.Write(" {0}", piece.Letter);
+                }
+            }
+            Console.ResetColor();
         }
     }
 }

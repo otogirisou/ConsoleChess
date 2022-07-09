@@ -42,17 +42,18 @@ namespace ConsoleChess
 
         public static bool CheckCheck(int firstInput, int secondInput, Board board, bool whitesTurn)
         {
-            Board tempCopy = board.Clone();
-            Game.PerformMove(firstInput, secondInput, tempCopy);
+            Game tempGame = new Game(new List<Piece>(), new List<Piece>());
+            tempGame.CurrentBoard = board.Clone();
+            tempGame.PerformMove(firstInput, secondInput);
             for (int kingIndex = 0; kingIndex < 64; kingIndex++)
             {
-                if (tempCopy.grid[kingIndex].OccupyingPiece != null)
+                if (tempGame.CurrentBoard.grid[kingIndex].OccupyingPiece != null)
                 {
-                    if (tempCopy.grid[kingIndex].OccupyingPiece.PieceTypePublic == PieceType.King && tempCopy.grid[kingIndex].OccupyingPiece.White == whitesTurn)
+                    if (tempGame.CurrentBoard.grid[kingIndex].OccupyingPiece.PieceTypePublic == PieceType.King && tempGame.CurrentBoard.grid[kingIndex].OccupyingPiece.White == whitesTurn)
                     {
                         for (int i = 0; i < 64; i++)
                         {
-                            if (CheckMove(i, kingIndex, tempCopy, whitesTurn))
+                            if (CheckMove(i, kingIndex, tempGame.CurrentBoard, whitesTurn))
                             {
                                 return false;
                             }

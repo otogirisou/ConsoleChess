@@ -9,9 +9,32 @@ namespace ConsoleChess
 {
     class Game
     {
+        public List<Piece> DeadWhitePieces
+        {
+            get
+            {
+                return deadWhitePieces;
+            }
+        }
+        public List<Piece> DeadBlackPieces
+        {
+            get
+            {
+                return deadBlackPieces;
+            }
+        }
 
         int firstMove;
         int secondMove;
+        private List<Piece> deadWhitePieces;
+        private List<Piece> deadBlackPieces;
+
+        public Game(List<Piece> deadwhitepieces, List<Piece> deadblackpieces)
+        {
+            deadWhitePieces = deadwhitepieces;
+            deadBlackPieces = deadblackpieces;
+        }
+
         private bool? whitesTurn;
         private Board currentBoard;
         public Board CurrentBoard
@@ -45,7 +68,6 @@ namespace ConsoleChess
 
         public void StartGame()
         {
-
             while (true)
             {
                 Console.WriteLine("Where is the piece you want to move? (A-H)(1-8)");
@@ -83,9 +105,9 @@ namespace ConsoleChess
                         }
                         else
                         {
-                            PerformMove(firstMove, secondMove, currentBoard);
+                            PerformMove(firstMove, secondMove);
                             Console.Clear();
-                            ConsoleHelper.PrintBoard(currentBoard);
+                            ConsoleHelper.PrintBoard(currentBoard, DeadWhitePieces, DeadBlackPieces);
                             whitesTurn = !whitesTurn;
                         }
                     }
@@ -98,12 +120,22 @@ namespace ConsoleChess
             }
         }
 
-        public static void PerformMove(int firstInput, int secondInput, Board board)
+        public void PerformMove(int firstInput, int secondInput)
         {
-            board.grid[firstInput].OccupyingPiece.HasMoved = true;
-            //code here to keep track of dead pieces
-            board.grid[secondInput].OccupyingPiece = board.grid[firstInput].OccupyingPiece;
-            board.grid[firstInput].OccupyingPiece = null;
+            currentBoard.grid[firstInput].OccupyingPiece.HasMoved = true;
+            if (currentBoard.grid[secondInput].OccupyingPiece != null)
+            {
+                if (currentBoard.grid[secondInput].OccupyingPiece.White)
+                {
+                    deadWhitePieces.Add(currentBoard.grid[secondInput].OccupyingPiece);
+                }
+                else
+                {
+                    deadBlackPieces.Add(currentBoard.grid[secondInput].OccupyingPiece);
+                }
+            }
+            currentBoard.grid[secondInput].OccupyingPiece = currentBoard.grid[firstInput].OccupyingPiece;
+            currentBoard.grid[firstInput].OccupyingPiece = null;
         }
     }
 }
