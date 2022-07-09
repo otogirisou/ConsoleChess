@@ -24,8 +24,6 @@ namespace ConsoleChess
             }
         }
 
-        int firstMove;
-        int secondMove;
         private List<Piece> deadWhitePieces;
         private List<Piece> deadBlackPieces;
 
@@ -68,57 +66,59 @@ namespace ConsoleChess
 
         public void StartGame()
         {
+            int firstMove;
+            int secondMove;
             while (true)
             {
-                Console.WriteLine("Where is the piece you want to move? (A-H)(1-8)");
-                firstMove = ConsoleHelper.GetIndexFromInput();
+                DisplayMessage("Where is the piece you want to move? (A-H)(1-8)");
+                firstMove = GetIndexFromOutput();
                 if (firstMove == -1)
                 {
-                    Console.WriteLine("Not a valid input! Try again");
+                    DisplayMessage("Not a valid input! Try again");
                 }
                 else if (firstMove == -2)
                 {
-                    ConsoleHelper.SaveGameAndExit(this);
+                    SaveGameAndExit();
                     break;
                 }
                 else if (currentBoard.grid[firstMove].OccupyingPiece == null)
                 {
-                    ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                    Console.WriteLine("There is no piece to move there! Try again");
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                    DisplayMessage("There is no piece to move there! Try again");
                 }
                 else if (currentBoard.grid[firstMove].OccupyingPiece.White != whitesTurn) //dont have to check elsewhere but i think currently it does...
                 {
-                    ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                    Console.WriteLine("The piece there is not yours! Try again");
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                    DisplayMessage("The piece there is not yours! Try again");
                 }
                 else
                 {
-                    ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, firstMove, (bool)whitesTurn, Rules.PossibleMoves(firstMove, currentBoard)); 
-                    Console.WriteLine("Where do you want to move? (A - H)(1 - 8)");
-                    secondMove = ConsoleHelper.GetIndexFromInput();
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, firstMove, (bool)whitesTurn, Rules.PossibleMoves(firstMove, currentBoard));
+                    DisplayMessage("Where do you want to move? (A - H)(1 - 8)");
+                    secondMove = GetIndexFromOutput();
                     if (secondMove == -1)
                     {
-                        ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                        Console.WriteLine("Not a valid input! Try again");
+                        DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                        DisplayMessage("Not a valid input! Try again");
                     }
                     else if (Rules.CheckMove(firstMove, secondMove, currentBoard))
                     {
                         if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, (bool)whitesTurn))
                         {
-                            ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                            Console.WriteLine("That move would leave your king checked! Try again");
+                            DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                            DisplayMessage("That move would leave your king checked! Try again");
                         }
                         else
                         {
                             PerformMove(firstMove, secondMove);
                             whitesTurn = !whitesTurn;
-                            ConsoleHelper.PrintBoard(currentBoard, DeadWhitePieces, DeadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                            DisplayBoard(currentBoard, DeadWhitePieces, DeadBlackPieces, -1, (bool)whitesTurn, new List<int>());
                         }
                     }
                     else
                     {
-                        ConsoleHelper.PrintBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>()); 
-                        Console.WriteLine("Not a valid move! Try again"); 
+                        DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                        DisplayMessage("Not a valid move! Try again"); 
                     }
                 }
             }
@@ -140,6 +140,26 @@ namespace ConsoleChess
             }
             currentBoard.grid[secondInput].OccupyingPiece = currentBoard.grid[firstInput].OccupyingPiece;
             currentBoard.grid[firstInput].OccupyingPiece = null;
+        }
+
+        private void DisplayMessage(string message) //to add modularity
+        {
+            Console.WriteLine(message);
+        }
+
+        private void DisplayBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece, bool whitesTurn, List<int> possibleMoves) //to add modularity
+        {
+            ConsoleHelper.PrintBoard(board, deadWhitePieces, deadBlackPieces, selectedPiece, whitesTurn, possibleMoves);
+        }
+
+        private int GetIndexFromOutput() //to add modularity
+        {
+            return ConsoleHelper.GetIndexFromInput();
+        }
+
+        private void SaveGameAndExit() //to add modularity
+        {
+            ConsoleHelper.SaveGameAndExit(this);
         }
     }
 }
