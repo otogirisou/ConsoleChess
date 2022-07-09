@@ -33,7 +33,7 @@ namespace ConsoleChess
                 game = SaveLoad.Load();
 
             }
-            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1);
+            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1, (bool)game.WhitesTurn);
             return game;
         }
         public static int GetIndexFromInput()
@@ -125,7 +125,7 @@ namespace ConsoleChess
             }
         }
 
-        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece)
+        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece, bool whitesTurn)
         {
             Console.Clear();
             for (int i = 0; i < 64; i++)
@@ -155,6 +155,23 @@ namespace ConsoleChess
                 }
             }
             Console.WriteLine("     A B C D E F G H");
+            PrintTurnDisplay(whitesTurn);
+        }
+
+        private static void PrintTurnDisplay(bool whitesTurn)
+        {
+            Console.ForegroundColor = ConsoleColor.Black;
+            if (whitesTurn)
+            {
+                Console.BackgroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine("       Blues's turn ");
+            }
+            else
+            {
+                Console.BackgroundColor = ConsoleColor.Red;
+                Console.WriteLine("       Reds's turn  ");
+            }
+            Console.ResetColor();
         }
 
         private static void PrintSpace(Space space, bool selected)
