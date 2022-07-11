@@ -14,6 +14,7 @@ namespace ConsoleChess
             string userInput = "";
             do
             {
+                Console.Clear();
                 Console.WriteLine("Enter 'new' to start a new game");
                 Console.WriteLine("Enter 'load' to load previous game. Enter 'save' while playing to save");
                 userInput = Console.ReadLine().Trim().ToLower();
@@ -31,7 +32,6 @@ namespace ConsoleChess
             else
             {
                 game = SaveLoad.Load();
-
             }
             ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1, (bool)game.WhitesTurn, new List<int>());
             return game;
@@ -123,36 +123,38 @@ namespace ConsoleChess
             }
         }
 
-        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece, bool whitesTurn, List<int> possibleMoves)
+        private static void PrintRow(Board board, int selectedPiece, List<int> possibleMoves, int rowNumber)
         {
-            Console.Clear();
-            for (int i = 0; i < 64; i++)
+            bool selected;
+            for (int i = 0; i < 8; i++)
             {
-                if (i % 8 == 0)
-                {
-                    Console.Write("{0} - ", (i / 8) + 1);
-                }
-                bool selected = false;
-                if (i == selectedPiece || possibleMoves.Contains(i))
+                selected = false;
+                if (i == selectedPiece || possibleMoves.Contains(i + rowNumber * 8))
                 {
                     selected = true;
                 }
-                PrintSpace(board.grid[i], selected);
+                PrintSpace(board.grid[i + rowNumber * 8], selected);
+            }
+        }
 
-                if ((i + 1) % 8 == 0)
+        public static void PrintBoard(Board board, List<Piece> deadWhitePieces, List<Piece> deadBlackPieces, int selectedPiece, bool whitesTurn, List<int> possibleMoves)
+        {
+            Console.Clear();
+            for (int i = 0; i < 8; i++)
+            {
+                Console.Write("{0} - ", i + 1);
+                PrintRow(board, selectedPiece, possibleMoves, i);
+                if (i == 0)
                 {
-                    if (i == 7)
-                    {
-                        Console.Write("  Dead blue pieces: ");
-                        PrintDeadPieces(deadWhitePieces);
-                    }
-                    else if (i == 15)
-                    {
-                        Console.Write("  Dead red pieces:  ");
-                        PrintDeadPieces(deadBlackPieces);
-                    }
-                    Console.WriteLine();
+                    Console.Write("  Dead blue pieces: ");
+                    PrintDeadPieces(deadWhitePieces);
                 }
+                else if (i == 1)
+                {
+                    Console.Write("  Dead red pieces:  ");
+                    PrintDeadPieces(deadBlackPieces);
+                }
+                Console.WriteLine();
             }
             Console.WriteLine("     A B C D E F G H");
             PrintTurnDisplay(whitesTurn);
