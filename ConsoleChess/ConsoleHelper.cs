@@ -179,6 +179,7 @@ namespace ConsoleChess
 
         private static void PrintSpace(Space space, bool selected)
         {
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
             if (selected)
             {
                 Console.BackgroundColor = ConsoleColor.Green;
@@ -208,7 +209,7 @@ namespace ConsoleChess
             {
                 letter = ' ';
             }
-            Console.Write(" {0}", letter);
+            Console.Write("{0} ", letter);
             Console.ResetColor();
         }
 

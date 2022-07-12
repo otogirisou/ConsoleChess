@@ -16,22 +16,22 @@ namespace ConsoleChess
             switch (piecetypepublic)
             {
                 case PieceType.Pawn:
-                    letter = 'p';
+                    letter = '♙';
                     break;
                 case PieceType.Tower:
-                    letter = 't';
+                    letter = '♖';
                     break;
                 case PieceType.Knight:
-                    letter = 'k';
+                    letter = '♘';
                     break;
                 case PieceType.Bishop:
-                    letter = 'b';
+                    letter = '♗';
                     break;
                 case PieceType.King:
-                    letter = 'K';
+                    letter = '♔';
                     break;
                 case PieceType.Queen:
-                    letter = 'Q';
+                    letter = '♕';
                     break;
                 default:
                     return;
@@ -52,9 +52,9 @@ namespace ConsoleChess
         public bool HasMoved
         {
             get { return hasMoved; }
-            set 
-            { 
-                if(!hasMoved)
+            set
+            {
+                if (!hasMoved)
                 {
                     hasMoved = value;
                 }
