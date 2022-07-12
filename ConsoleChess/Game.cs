@@ -101,6 +101,11 @@ namespace ConsoleChess
                         DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
                         DisplayMessage("Not a valid input! Try again");
                     }
+                    else if (secondMove == -2)
+                    {
+                        SaveGameAndExit();
+                        break;
+                    }
                     else if (Rules.CheckMove(firstMove, secondMove, currentBoard))
                     {
                         if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, (bool)whitesTurn))
@@ -118,7 +123,7 @@ namespace ConsoleChess
                     else
                     {
                         DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                        DisplayMessage("Not a valid move! Try again"); 
+                        DisplayMessage("Not a valid move! Try again");
                     }
                 }
             }

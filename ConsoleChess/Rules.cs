@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using System.Diagnostics;
-
 namespace ConsoleChess
 {
     static class Rules
@@ -60,7 +58,6 @@ namespace ConsoleChess
                             {
                                 if (CheckMove(i, kingIndex, tempGame.CurrentBoard))
                                 {
-                                    Debug.WriteLine(i);
                                     return false;
                                 }
                             }
@@ -88,7 +85,7 @@ namespace ConsoleChess
                 else
                 {
                     if (secondInput == firstInput + 8 //dest is one down
-                        || (secondInput == firstInput + 16 && !(bool)board.grid[firstInput].OccupyingPiece.HasMoved && board.grid[firstInput+8].OccupyingPiece == null)) //dest is two down and the pawn hasnt moved yet
+                        || (secondInput == firstInput + 16 && !(bool)board.grid[firstInput].OccupyingPiece.HasMoved && board.grid[firstInput + 8].OccupyingPiece == null)) //dest is two down and the pawn hasnt moved yet
                     {
                         return true;
                     }
@@ -97,7 +94,7 @@ namespace ConsoleChess
             }
             else
             {
-                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White) 
+                if (board.grid[firstInput].OccupyingPiece.White == board.grid[secondInput].OccupyingPiece.White)
                 {
                     return false;
                 }
@@ -133,14 +130,14 @@ namespace ConsoleChess
                 }
             }
             //^^^^
-            if (secondInput/8 == firstInput/8) //same row
+            if (secondInput / 8 == firstInput / 8) //same row
             {
                 int horrizontalTower = 1;
                 if (secondInput < firstInput)
                 {
-                    while (firstInput-horrizontalTower != secondInput) //check in between current and dest
+                    while (firstInput - horrizontalTower != secondInput) //check in between current and dest
                     {
-                        if (board.grid[firstInput-horrizontalTower] != null)
+                        if (board.grid[firstInput - horrizontalTower] != null)
                         {
                             return false;
                         }
@@ -149,9 +146,9 @@ namespace ConsoleChess
                 }
                 else
                 {
-                    while (firstInput+horrizontalTower != secondInput) //check in between current and dest
+                    while (firstInput + horrizontalTower != secondInput) //check in between current and dest
                     {
-                        if (board.grid[firstInput+horrizontalTower] != null)
+                        if (board.grid[firstInput + horrizontalTower] != null)
                         {
                             return false;
                         }
@@ -216,13 +213,13 @@ namespace ConsoleChess
             if (secondInput < firstInput)
             {
                 int rowsToMove = firstInput / 8 - secondInput / 8;
-                if (firstInput%8 == (secondInput%8)+rowsToMove || (firstInput%8)+rowsToMove == (secondInput%8)) //check if its diagonal
+                if (firstInput % 8 == (secondInput % 8) + rowsToMove || (firstInput % 8) + rowsToMove == (secondInput % 8)) //check if its diagonal
                 {
-                    if (secondInput%8 < firstInput%8) 
+                    if (secondInput % 8 < firstInput % 8)
                     {
                         for (int i = 1; i < rowsToMove; i++) //check all spaces in between current and dest
                         {
-                            if (board.grid[firstInput-7*i].OccupyingPiece != null)
+                            if (board.grid[firstInput - 7 * i].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -242,16 +239,16 @@ namespace ConsoleChess
                 }
                 return false;
             }
-            else 
+            else
             {
                 int rowsToMove = secondInput / 8 - firstInput / 8;
-                if (firstInput%8 == (secondInput%8)+rowsToMove ||(firstInput%8)+rowsToMove == (secondInput%8))
+                if (firstInput % 8 == (secondInput % 8) + rowsToMove || (firstInput % 8) + rowsToMove == (secondInput % 8))
                 {
-                    if (secondInput%8 < firstInput%8)
+                    if (secondInput % 8 < firstInput % 8)
                     {
                         for (int i = 1; i < rowsToMove; i++) //check all spaces in between current and dest
                         {
-                            if (board.grid[firstInput+7*i].OccupyingPiece != null)
+                            if (board.grid[firstInput + 7 * i].OccupyingPiece != null)
                             {
                                 return false;
                             }
@@ -281,9 +278,9 @@ namespace ConsoleChess
                     return false;
                 }
             }
-            if (secondInput%8 == 1+firstInput%8 || 1+secondInput%8 == firstInput%8) //dest is one to either side
+            if (secondInput % 8 == 1 + firstInput % 8 || 1 + secondInput % 8 == firstInput % 8) //dest is one to either side
             {
-                if (2+secondInput/8 == firstInput/8 || 2+firstInput/8 == secondInput/8) //dest is two up or down
+                if (2 + secondInput / 8 == firstInput / 8 || 2 + firstInput / 8 == secondInput / 8) //dest is two up or down
                 {
                     return true;
                 }
