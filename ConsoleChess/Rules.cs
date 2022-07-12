@@ -137,7 +137,7 @@ namespace ConsoleChess
                 {
                     while (firstInput - horrizontalTower != secondInput) //check in between current and dest
                     {
-                        if (board.grid[firstInput - horrizontalTower] != null)
+                        if (board.grid[firstInput - horrizontalTower].OccupyingPiece != null)
                         {
                             return false;
                         }
@@ -148,7 +148,7 @@ namespace ConsoleChess
                 {
                     while (firstInput + horrizontalTower != secondInput) //check in between current and dest
                     {
-                        if (board.grid[firstInput + horrizontalTower] != null)
+                        if (board.grid[firstInput + horrizontalTower].OccupyingPiece != null)
                         {
                             return false;
                         }

@@ -129,8 +129,9 @@ namespace ConsoleChess
             for (int i = 0; i < 8; i++)
             {
                 selected = false;
-                if (i == selectedPiece || possibleMoves.Contains(i + rowNumber * 8))
+                if (i + (rowNumber * 8) == selectedPiece || possibleMoves.Contains(i + (rowNumber * 8)))
                 {
+
                     selected = true;
                 }
                 PrintSpace(board.grid[i + rowNumber * 8], selected);
