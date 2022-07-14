@@ -60,6 +60,10 @@ namespace ConsoleChess
                             }
                             if (tempGame.CurrentBoard.grid[i].OccupyingPiece != null)
                             {
+                                if (tempGame.CurrentBoard.grid[i].OccupyingPiece.White == whitesTurn)
+                                {
+                                    continue;
+                                }
                                 if (CheckMove(i, kingIndex, tempGame.CurrentBoard))
                                 {
                                     return false;
