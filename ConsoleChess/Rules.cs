@@ -66,7 +66,7 @@ namespace ConsoleChess
                     }
                 }
             }
-            return false; //unreachable i think
+            return false; //unreachable because there will always be a king
         }
 
         private static bool CheckPawn(int firstInput, int secondInput, Board board)
