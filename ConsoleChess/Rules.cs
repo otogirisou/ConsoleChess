@@ -54,6 +54,10 @@ namespace ConsoleChess
                     {
                         for (int i = 0; i < 64; i++)
                         {
+                            if (i == kingIndex)
+                            {
+                                continue;
+                            }
                             if (tempGame.CurrentBoard.grid[i].OccupyingPiece != null)
                             {
                                 if (CheckMove(i, kingIndex, tempGame.CurrentBoard))
