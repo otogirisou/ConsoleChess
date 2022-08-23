@@ -70,62 +70,13 @@ namespace ConsoleChess
             int secondMove;
             while (true)
             {
-                DisplayMessage("Where is the piece you want to move? (A-H)(1-8)");
-                firstMove = GetIndexFromOutput();
-                if (firstMove == -1)
-                {
-                    DisplayMessage("Not a valid input! Try again");
-                }
-                else if (firstMove == -2)
-                {
-                    SaveGameAndExit();
-                    break;
-                }
-                else if (currentBoard.grid[firstMove].OccupyingPiece == null)
-                {
-                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                    DisplayMessage("There is no piece to move there! Try again");
-                }
-                else if (currentBoard.grid[firstMove].OccupyingPiece.White != whitesTurn) //dont have to check elsewhere but i think currently it does...
-                {
-                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                    DisplayMessage("The piece there is not yours! Try again");
-                }
-                else
-                {
-                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, firstMove, (bool)whitesTurn, Rules.PossibleMoves(firstMove, currentBoard));
-                    DisplayMessage("Where do you want to move? (A - H)(1 - 8)");
-                    secondMove = GetIndexFromOutput();
-                    if (secondMove == -1)
-                    {
-                        DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                        DisplayMessage("Not a valid input! Try again");
-                    }
-                    else if (secondMove == -2)
-                    {
-                        SaveGameAndExit();
-                        break;
-                    }
-                    else if (Rules.CheckMove(firstMove, secondMove, currentBoard))
-                    {
-                        if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, (bool)whitesTurn))
-                        {
-                            DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                            DisplayMessage("That move would leave your king checked! Try again");
-                        }
-                        else
-                        {
-                            PerformMove(firstMove, secondMove);
-                            whitesTurn = !whitesTurn;
-                            DisplayBoard(currentBoard, DeadWhitePieces, DeadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                        }
-                    }
-                    else
-                    {
-                        DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
-                        DisplayMessage("Not a valid move! Try again");
-                    }
-                }
+                firstMove = GetFirstMove();
+                secondMove = GetSecondMove(firstMove);
+
+                PerformMove(firstMove, secondMove);
+                whitesTurn = !whitesTurn;
+                DisplayBoard(currentBoard, DeadWhitePieces, DeadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+
             }
         }
 
@@ -162,9 +113,78 @@ namespace ConsoleChess
             return ConsoleHelper.GetIndexFromInput();
         }
 
+        private int GetFirstMove()
+        {
+            while (true)
+            {
+                DisplayMessage("Where is the piece you want to move? (A-H)(1-8)");
+                int firstMove = GetIndexFromOutput();
+                if (firstMove == -1)
+                {
+                    DisplayMessage("Not a valid input! Try again");
+                }
+                else if (firstMove == -2)
+                {
+                    SaveGameAndExit();
+                }
+                else if (currentBoard.grid[firstMove].OccupyingPiece == null)
+                {
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                    DisplayMessage("There is no piece to move there! Try again");
+                }
+                else if (currentBoard.grid[firstMove].OccupyingPiece.White != whitesTurn) //dont have to check elsewhere but i think currently it does...
+                {
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                    DisplayMessage("The piece there is not yours! Try again");
+                }
+                else
+                {
+                    return firstMove;
+                }
+            }
+        }
+
+        private int GetSecondMove(int firstMove)
+        {
+            while(true)
+            {
+                DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, firstMove, (bool)whitesTurn, Rules.PossibleMoves(firstMove, currentBoard));
+                DisplayMessage("Where do you want to move? (A - H)(1 - 8)");
+                int secondMove = GetIndexFromOutput();
+                if (secondMove == -1)
+                {
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                    DisplayMessage("Not a valid input! Try again");
+                }
+                else if (secondMove == -2)
+                {
+                    SaveGameAndExit();
+                }
+                else if (Rules.CheckMove(firstMove, secondMove, currentBoard))
+                {
+                    if (!Rules.CheckCheck(firstMove, secondMove, currentBoard, (bool)whitesTurn))
+                    {
+                        DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                        DisplayMessage("That move would leave your king checked! Try again");
+                    }
+                    else
+                    {
+                        return secondMove;
+                    }
+                }
+                else
+                {
+                    DisplayBoard(currentBoard, deadWhitePieces, deadBlackPieces, -1, (bool)whitesTurn, new List<int>());
+                    DisplayMessage("Not a valid move! Try again");
+                }
+                firstMove = GetFirstMove();
+            }
+        }
+
         private void SaveGameAndExit() //to add modularity
         {
             ConsoleHelper.SaveGameAndExit(this);
+            Environment.Exit(0);
         }
     }
 }

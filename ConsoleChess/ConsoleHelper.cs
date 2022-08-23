@@ -11,6 +11,31 @@ namespace ConsoleChess
     {
         public static Game InitialMenu()
         {
+            Game game;
+            if (GetUserMenuInput() == "new")
+            {
+                game = NewGame();
+            }
+            else
+            {
+                game = SaveLoad.Load();
+            }
+            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1, (bool)game.WhitesTurn, new List<int>());
+            return game;
+        }
+
+        private static Game NewGame()
+        {
+            Game game = new Game(new List<Piece>(), new List<Piece>());
+            Board currentBoard = new Board();
+            currentBoard.InitialSetup();
+            game.CurrentBoard = currentBoard;
+            game.WhitesTurn = true;
+            return game;
+        }
+
+        private static string GetUserMenuInput()
+        {
             string userInput = "";
             do
             {
@@ -20,26 +45,12 @@ namespace ConsoleChess
                 userInput = Console.ReadLine().Trim().ToLower();
             } while (userInput != "new" && userInput != "load");
             Console.Clear();
-            Game game;
-            if (userInput == "new")
-            {
-                game = new Game(new List<Piece>(), new List<Piece>());
-                Board currentBoard = new Board();
-                currentBoard.InitialSetup();
-                game.CurrentBoard = currentBoard;
-                game.WhitesTurn = true;
-            }
-            else
-            {
-                game = SaveLoad.Load();
-            }
-            ConsoleHelper.PrintBoard(game.CurrentBoard, game.DeadWhitePieces, game.DeadBlackPieces, -1, (bool)game.WhitesTurn, new List<int>());
-            return game;
+            return userInput;
         }
+
         public static int GetIndexFromInput()
         {
-            int firstPart;
-            int secondPart;
+            int firstPart, secondPart;
             string userInput = Console.ReadLine().Trim().ToLower();
             if (userInput == "save")
             {
@@ -62,7 +73,6 @@ namespace ConsoleChess
                     return -1;
                 }
                 return firstPart + secondPart;
-
             }
         }
 
@@ -131,7 +141,6 @@ namespace ConsoleChess
                 selected = false;
                 if (i + (rowNumber * 8) == selectedPiece || possibleMoves.Contains(i + (rowNumber * 8)))
                 {
-
                     selected = true;
                 }
                 PrintSpace(board.grid[i + rowNumber * 8], selected);
@@ -181,34 +190,22 @@ namespace ConsoleChess
         {
             Console.OutputEncoding = System.Text.Encoding.Unicode;
             if (selected)
-            {
                 Console.BackgroundColor = ConsoleColor.Green;
-            }
             else if ((bool)space.WhiteSpace)
-            {
                 Console.BackgroundColor = ConsoleColor.White;
-            }
             else
-            {
                 Console.BackgroundColor = ConsoleColor.Black;
-            }
             char letter;
             if (space.OccupyingPiece != null)
             {
                 letter = space.OccupyingPiece.Letter;
                 if (space.OccupyingPiece.White)
-                {
                     Console.ForegroundColor = ConsoleColor.Blue; // white is blue
-                }
                 else
-                {
                     Console.ForegroundColor = ConsoleColor.Red; // black is red
-                }
             }
             else
-            {
                 letter = ' ';
-            }
             Console.Write("{0} ", letter);
             Console.ResetColor();
         }
@@ -218,17 +215,11 @@ namespace ConsoleChess
             if (deadPieces.Count != 0)
             {
                 if (deadPieces.First().White)
-                {
                     Console.ForegroundColor = ConsoleColor.Blue;
-                }
                 else
-                {
                     Console.ForegroundColor = ConsoleColor.Red;
-                }
                 foreach (Piece piece in deadPieces)
-                {
                     Console.Write(" {0}", piece.Letter);
-                }
             }
             Console.ResetColor();
         }
